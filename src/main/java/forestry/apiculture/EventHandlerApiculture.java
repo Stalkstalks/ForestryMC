@@ -34,19 +34,31 @@ public class EventHandlerApiculture {
                     tooltip.add(StringUtil.localize("frame.tooltip.durability") + getDurabilityFormatted(durability));
 
                     float territory = modifier.getTerritoryModifier(null, 1.0F);
-                    tooltip.add(StringUtil.localize("frame.tooltip.territory") + getColorFormatted(territory));
-
+                    tooltip.add(
+                            StringUtil.localize("frame.tooltip.territory")
+                                    + getModifierFormatted(territory, false, false));
                     float mutation = modifier.getMutationModifier(null, null, 1.0F);
-                    tooltip.add(StringUtil.localize("frame.tooltip.mutationRate") + getColorFormatted(mutation));
-
+                    tooltip.add(
+                            StringUtil.localize("frame.tooltip.mutationRate")
+                                    + getModifierFormatted(mutation, false, false));
                     float lifespan = modifier.getLifespanModifier(null, null, 1.0F);
-                    tooltip.add(StringUtil.localize("frame.tooltip.lifespan") + getColorFormatted(lifespan));
-
-                    float production = modifier.getProductionModifier(null, 1.0F);
-                    tooltip.add(StringUtil.localize("frame.tooltip.production") + getColorFormatted(production, true));
-
+                    // lower lifespan is better
+                    tooltip.add(
+                            StringUtil.localize("frame.tooltip.lifespan")
+                                    + getModifierFormatted(lifespan, false, true));
+                    float production = modifier.getProductionModifier(null, 0.0F);
+                    tooltip.add(
+                            StringUtil.localize("frame.tooltip.production")
+                                    + getModifierFormatted(production, true, false));
+                    float flowering = modifier.getFloweringModifier(null, 1.0F);
+                    tooltip.add(
+                            StringUtil.localize("frame.tooltip.flowering")
+                                    + getModifierFormatted(flowering, false, false));
                     float decay = modifier.getGeneticDecay(null, 1.0F);
-                    tooltip.add(StringUtil.localize("frame.tooltip.geneticDecay") + getColorFormatted(decay));
+                    // lower genetic decay is better
+                    tooltip.add(
+                            StringUtil.localize("frame.tooltip.geneticDecay")
+                                    + getModifierFormatted(decay, false, true));
                 }
             }
         }
@@ -68,15 +80,27 @@ public class EventHandlerApiculture {
         return color + " " + durability;
     }
 
-    private static String getColorFormatted(float value, boolean additive) {
+    private static String getModifierFormatted(float value, boolean additive, boolean undesireable) {
         EnumChatFormatting color;
-        if (value <= 0.5F) {
+        float lo_threshold = 0.5F, mid_threshold = 1.0F, hi_threshold = 2.0F;
+        float discriminant = value;
+        if (additive) {
+            lo_threshold = -1.0F;
+            mid_threshold = 0.0F;
+            hi_threshold = 2.0F; // this one is the same
+            if (undesireable) {
+                discriminant = -value;
+            }
+        } else if (undesireable) {
+            discriminant = 1.0F / value;
+        }
+        if (discriminant <= lo_threshold) {
             color = EnumChatFormatting.DARK_RED; // "bad" stat
-        } else if (value < 1.0F) {
+        } else if (discriminant < mid_threshold) {
             color = EnumChatFormatting.RED; // "below average" stat
-        } else if (value == 1.0F) {
+        } else if (discriminant == mid_threshold) {
             color = EnumChatFormatting.GOLD; // "average" stat
-        } else if (value <= 2.0F) {
+        } else if (discriminant <= hi_threshold) {
             color = EnumChatFormatting.GREEN; // "above average" stat
         } else {
             color = EnumChatFormatting.AQUA; // "great" stat
@@ -84,10 +108,12 @@ public class EventHandlerApiculture {
         String formatted = color.toString();
 
         // Set symbol for if this value is additive or multiplicative
-        if (additive) {
+        if (!additive) {
+            formatted += " x";
+        } else if (value >= 0.0F) {
             formatted += " +";
         } else {
-            formatted += " x";
+            formatted += " "; // the "-" will be applied, but we still need a space or minecraft will crash
         }
 
         // trim trailing zeroes if no decimal-precision is needed
@@ -95,9 +121,5 @@ public class EventHandlerApiculture {
             return formatted + (long) value;
         }
         return formatted + value;
-    }
-
-    private static String getColorFormatted(float value) {
-        return getColorFormatted(value, false);
     }
 }
