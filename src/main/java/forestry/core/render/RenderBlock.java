@@ -14,11 +14,15 @@ import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.world.IBlockAccess;
 
+import com.gtnewhorizons.angelica.api.ThreadSafeISBRH;
+
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 import forestry.core.proxy.Proxies;
 
+@ThreadSafeISBRH(perThread = false)
 public class RenderBlock implements ISimpleBlockRenderingHandler {
 
+    // Seems to be set during registration - should be fine to not use a concurrent hashmap
     public static final HashMap<TileRendererIndex, IBlockRenderer> byBlockRenderer = new HashMap<>();
 
     @Override

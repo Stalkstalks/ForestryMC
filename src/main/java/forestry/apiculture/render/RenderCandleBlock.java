@@ -15,11 +15,14 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 
+import com.gtnewhorizons.angelica.api.ThreadSafeISBRH;
+
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 import forestry.apiculture.blocks.BlockCandle;
 import forestry.apiculture.tiles.TileCandle;
 import forestry.core.proxy.Proxies;
 
+@ThreadSafeISBRH(perThread = false)
 public class RenderCandleBlock implements ISimpleBlockRenderingHandler {
 
     @Override
@@ -58,7 +61,7 @@ public class RenderCandleBlock implements ISimpleBlockRenderingHandler {
         IIcon iconB = block.getTextureFromPassAndLit(1, isLit);
 
         int colour = tileCandle.getColour();
-        Tessellator tessellator = Tessellator.instance;
+        final Tessellator tessellator = Tessellator.instance;
         tessellator.setBrightness(world.getLightBrightnessForSkyBlocks(x, y, z, block.getLightValue(world, x, y, z)));
         tessellator.setColorOpaque_F(1.0F, 1.0F, 1.0F);
         double d0 = 0.4000000059604645D;
@@ -87,7 +90,7 @@ public class RenderCandleBlock implements ISimpleBlockRenderingHandler {
 
     private static void renderCandleAtAngle(IIcon icon, double x, double y, double z, double par8, double par10,
             int colour) {
-        Tessellator tessellator = Tessellator.instance;
+        final Tessellator tessellator = Tessellator.instance;
         double minU = icon.getMinU();
         double minV = icon.getMinV();
         double maxU = icon.getMaxU();

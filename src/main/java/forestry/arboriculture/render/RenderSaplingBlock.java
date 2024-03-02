@@ -15,6 +15,8 @@ import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 
+import com.gtnewhorizons.angelica.api.ThreadSafeISBRH;
+
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 import forestry.api.arboriculture.EnumGermlingType;
 import forestry.api.arboriculture.IAlleleTreeSpecies;
@@ -22,9 +24,8 @@ import forestry.arboriculture.blocks.BlockSapling;
 import forestry.arboriculture.tiles.TileSapling;
 import forestry.plugins.PluginArboriculture;
 
+@ThreadSafeISBRH(perThread = false)
 public class RenderSaplingBlock implements ISimpleBlockRenderingHandler {
-
-    private static int renderLayer = 0;
 
     @Override
     public void renderInventoryBlock(Block block, int metadata, int modelID, RenderBlocks renderer) {}
@@ -45,10 +46,8 @@ public class RenderSaplingBlock implements ISimpleBlockRenderingHandler {
 
         IAlleleTreeSpecies species = tile.getTree().getGenome().getPrimary();
 
-        renderCrossedSquares(species, world, block, x, y, z);
-        renderLayer = 1;
-        renderCrossedSquares(species, world, block, x, y, z);
-        renderLayer = 0;
+        renderCrossedSquares(species, world, block, x, y, z, 0);
+        renderCrossedSquares(species, world, block, x, y, z, 1);
         return true;
     }
 
@@ -63,9 +62,9 @@ public class RenderSaplingBlock implements ISimpleBlockRenderingHandler {
     }
 
     private static boolean renderCrossedSquares(IAlleleTreeSpecies species, IBlockAccess world, Block block, int x,
-            int y, int z) {
+            int y, int z, int renderLayer) {
 
-        Tessellator tess = Tessellator.instance;
+        final Tessellator tess = Tessellator.instance;
 
         tess.setBrightness(block.getMixedBrightnessForBlock(world, x, y, z));
         int colourMultiplier = species.getGermlingColour(EnumGermlingType.SAPLING, renderLayer);
@@ -81,14 +80,14 @@ public class RenderSaplingBlock implements ISimpleBlockRenderingHandler {
         }
 
         tess.setColorOpaque_F(r, g, b);
-        drawCrossedSquares(species, x, y, z, 1.0f);
+        drawCrossedSquares(species, x, y, z, 1.0f, renderLayer);
         return true;
     }
 
-    private static void drawCrossedSquares(IAlleleTreeSpecies species, double par3, double par5, double par7,
-            float mod) {
+    private static void drawCrossedSquares(IAlleleTreeSpecies species, double par3, double par5, double par7, float mod,
+            int renderLayer) {
 
-        Tessellator tess = Tessellator.instance;
+        final Tessellator tess = Tessellator.instance;
         IIcon icon = species.getGermlingIcon(EnumGermlingType.SAPLING, renderLayer);
 
         double d3 = (double) icon.getMinU();

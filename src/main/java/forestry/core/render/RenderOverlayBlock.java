@@ -14,8 +14,11 @@ import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 
+import com.gtnewhorizons.angelica.api.ThreadSafeISBRH;
+
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 
+@ThreadSafeISBRH(perThread = false)
 public abstract class RenderOverlayBlock implements ISimpleBlockRenderingHandler {
 
     protected static final double OVERLAY_SHIFT = 0.001;
