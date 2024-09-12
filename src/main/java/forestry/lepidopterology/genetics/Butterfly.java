@@ -14,6 +14,8 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Random;
 
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.entity.EntityCreature;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -58,6 +60,36 @@ public class Butterfly extends IndividualLiving implements IButterfly {
     public Butterfly(IButterflyGenome genome) {
         super(genome.getLifespan());
         this.genome = genome;
+    }
+
+    @Override
+    public void addLore(List<String> text) {
+        IAlleleButterflySpecies primary = genome.getPrimary();
+        String descTokens[] = primary.getDescription().split("\\|");
+
+        if (descTokens.length > 0) {
+            String speciesLore = descTokens[0];
+            if (!speciesLore.isEmpty() && !speciesLore.contains("for.description")) {
+                FontRenderer fontRenderer = Minecraft.getMinecraft().fontRenderer;
+                String formattedLore = EnumChatFormatting.GOLD + speciesLore;
+                List<String> formattedLoreList = fontRenderer.listFormattedStringToWidth(formattedLore, 200);
+                text.addAll(formattedLoreList);
+            }
+        }
+    }
+
+    @Override
+    public void addDiscoveredBy(List<String> text) {
+        IAlleleButterflySpecies primary = genome.getPrimary();
+        String descTokens[] = primary.getDescription().split("\\|");
+
+        if (descTokens.length > 2) {
+            String discoveredBy = descTokens[2];
+            if (!discoveredBy.isEmpty()) {
+                text.add("");
+                text.add("Discovered by " + EnumChatFormatting.ITALIC + discoveredBy);
+            }
+        }
     }
 
     @Override
