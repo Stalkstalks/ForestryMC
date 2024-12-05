@@ -14,6 +14,11 @@ import forestry.api.apiculture.IBeeGenome;
 public class AlvearyBeeModifier extends DefaultBeeModifier {
 
     @Override
+    public float getProductionModifier(IBeeGenome genome, float currentModifier) {
+        return 16.0f;
+    }
+
+    @Override
     public float getTerritoryModifier(IBeeGenome genome, float currentModifier) {
         return 2.0f;
     }

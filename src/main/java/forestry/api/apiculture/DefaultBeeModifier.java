@@ -24,7 +24,7 @@ public class DefaultBeeModifier implements IBeeModifier {
     }
 
     public float getProductionModifier(IBeeGenome genome, float currentModifier) {
-        return 0.0f;
+        return 1.0f;
     }
 
     public float getFloweringModifier(IBeeGenome genome, float currentModifier) {

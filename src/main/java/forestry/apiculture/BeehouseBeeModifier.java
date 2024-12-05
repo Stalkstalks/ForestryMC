@@ -20,7 +20,7 @@ public class BeehouseBeeModifier extends DefaultBeeModifier {
 
     @Override
     public float getProductionModifier(IBeeGenome genome, float currentModifier) {
-        return -0.75f;// results in 0.25 with no frames, see BeeHousingModifier,java
+        return 0.25f;
     }
 
     @Override
@@ -30,7 +30,7 @@ public class BeehouseBeeModifier extends DefaultBeeModifier {
 
     @Override
     public float getLifespanModifier(IBeeGenome genome, IBeeGenome mate, float currentModifier) {
-        return 3.0f;
+        return 100.0f;
     }
 
     @Override

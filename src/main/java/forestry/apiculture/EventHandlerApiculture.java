@@ -46,10 +46,10 @@ public class EventHandlerApiculture {
                     tooltip.add(
                             StringUtil.localize("frame.tooltip.lifespan")
                                     + getModifierFormatted(lifespan, false, true));
-                    float production = modifier.getProductionModifier(null, 0.0F);
+                    float production = modifier.getProductionModifier(null, 1.0F);
                     tooltip.add(
                             StringUtil.localize("frame.tooltip.production")
-                                    + getModifierFormatted(production, true, false));
+                                    + getModifierFormatted(production, false, false));
                     float flowering = modifier.getFloweringModifier(null, 1.0F);
                     tooltip.add(
                             StringUtil.localize("frame.tooltip.flowering")

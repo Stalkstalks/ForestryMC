@@ -24,19 +24,19 @@ import forestry.api.apiculture.IBeekeepingMode;
 
 public class BeekeepingMode implements IBeekeepingMode {
 
-    public static final IBeekeepingMode easy = new BeekeepingMode("EASY", 2.0f, 1.0f, 0.0f, false, false);// original
+    public static final IBeekeepingMode easy = new BeekeepingMode("EASY", 2.0f, 1.0f, 1.0f, false, false);// original
                                                                                                           // multiplicative
                                                                                                           // modifier is
                                                                                                           // 1x
-    public static final IBeekeepingMode normal = new BeekeepingMode("NORMAL", 1.0f, 1.0f, 0.0f, false, true);// orig 1x
-    public static final IBeekeepingMode hard = new BeekeepingMode("HARD", 0.75f, 1.5f, 0.0f, false, true);// orig 1x;
+    public static final IBeekeepingMode normal = new BeekeepingMode("NORMAL", 1.0f, 1.0f, 1.0f, false, true);// orig 1x
+    public static final IBeekeepingMode hard = new BeekeepingMode("HARD", 0.75f, 1.5f, 1.0f, false, true);// orig 1x;
                                                                                                           // this is the
                                                                                                           // default in
                                                                                                           // gtnh
-    public static final IBeekeepingMode hardcore = new BeekeepingMode("HARDCORE", 0.5f, 5.0f, -0.2f, true, true);// orig
-                                                                                                                 // 0.8x
-    public static final IBeekeepingMode insane = new BeekeepingMode("INSANE", 0.2f, 10.0f, -0.4f, true, true);// orig
-                                                                                                              // 0.6x
+    public static final IBeekeepingMode hardcore = new BeekeepingMode("HARDCORE", 0.5f, 5.0f, 0.8f, true, true);// orig
+                                                                                                                // 0.8x
+    public static final IBeekeepingMode insane = new BeekeepingMode("INSANE", 0.2f, 10.0f, 0.6f, true, true);// orig
+                                                                                                             // 0.6x
 
     private final Random rand;
     private final String name;
@@ -101,7 +101,7 @@ public class BeekeepingMode implements IBeekeepingMode {
     public boolean isOverworked(IBee queen, IBeeHousing housing) {
         IBeeModifier beeModifier = BeeManager.beeRoot.createBeeHousingModifier(housing);
 
-        float productionModifier = beeModifier.getProductionModifier(queen.getGenome(), 0f);
+        float productionModifier = beeModifier.getProductionModifier(queen.getGenome(), 1f);
         if (productionModifier > 16) {
             if (housing.getWorld().rand.nextFloat() * 100 < 0.01 * ((productionModifier * productionModifier) - 100)) {
                 return true;

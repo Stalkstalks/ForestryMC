@@ -38,12 +38,12 @@ public class EntityMinecartBeehouse extends EntityMinecartBeeHousingBase {
     @SuppressWarnings("unused")
     public EntityMinecartBeehouse(World world) {
         super(world);
-        beeInventory.disableAutomation();
+        // beeInventory.disableAutomation();
     }
 
     public EntityMinecartBeehouse(World world, double posX, double posY, double posZ) {
         super(world, posX, posY, posZ);
-        beeInventory.disableAutomation();
+        // beeInventory.disableAutomation();
     }
 
     @Override

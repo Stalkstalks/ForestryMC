@@ -562,8 +562,8 @@ public class Bee extends IndividualLiving implements IBee {
 
         // Bee genetic speed * beehousing * beekeeping mode
         float speed = genome.getSpeed();
-        float prodModifier = beeHousingModifier.getProductionModifier(genome, 0f);
-        prodModifier += beeModeModifier.getProductionModifier(genome, prodModifier);
+        float prodModifier = beeHousingModifier.getProductionModifier(genome, 1f)
+                * beeModeModifier.getProductionModifier(genome, 1f);
 
         // / Primary Products
         for (Map.Entry<ItemStack, Float> entry : primary.getProductChances().entrySet()) {
