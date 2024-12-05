@@ -41,15 +41,6 @@ public class InventoryApiary extends InventoryBeeHousing implements IApiaryInven
         return super.canSlotAccept(slotIndex, itemStack);
     }
 
-    // override for pipe automation
-    @Override
-    public boolean isItemValidForSlot(int slotIndex, ItemStack itemStack) {
-        if (SlotUtil.isSlotInRange(slotIndex, SLOT_FRAMES_1, SLOT_FRAMES_COUNT)) {
-            return false;
-        }
-        return super.isItemValidForSlot(slotIndex, itemStack);
-    }
-
     public Collection<IHiveFrame> getFrames() {
         Collection<IHiveFrame> hiveFrames = new ArrayList<>(SLOT_FRAMES_COUNT);
 
